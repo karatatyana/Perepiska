@@ -1,92 +1,301 @@
+document.addEventListener("DOMContentLoaded", function(){
+
 const Game = {
 
-  score: 0,
-  timeLeft: 300,
-  timerInterval: null,
+xp:0,
+level:0,
+xpToNext:100,
+name:"",
+avatar:"",
+selectedAvatar:null,
 
-  init() {
-    this.startTimer();
-  },
+completedTopics:[],
 
-  startTimer() {
-    this.timerInterval = setInterval(() => {
-      this.timeLeft--;
+init(){
+this.initParallax();
+this.initLight();
+this.initSnow();
+this.renderWelcome();
+this.renderMenu();
+},
 
-      let min = Math.floor(this.timeLeft / 60);
-      let sec = this.timeLeft % 60;
+/* ================= MENU ================= */
 
-      document.getElementById("timer").textContent =
-        `${min}:${sec.toString().padStart(2, "0")}`;
+toggleMenu(){
+let menu=document.getElementById("sideMenu");
+if(menu){
+menu.classList.toggle("open");
+}
+},
 
-      if (this.timeLeft <= 0) {
-        this.finish(false);
-      }
-    }, 1000);
-  },
+renderMenu(){
 
-  selectCharacter(type) {
+let menu=document.getElementById("sideMenu");
 
-    let scenario = "";
+if(!menu){
+menu=document.createElement("div");
+menu.id="sideMenu";
+menu.className="side-menu";
+document.body.appendChild(menu);
+}
 
-    if (type === "client") {
-      scenario = `
-        <h2>Ответ клиенту</h2>
-        <p>Клиент недоволен задержкой проекта. Сформулируйте корректный ответ.</p>
-        <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate()">Отправить</button>
-      `;
-    }
+menu.innerHTML=`
+<div class="menu-content">
+<h3>Темы курса</h3>
 
-    if (type === "colleague") {
-      scenario = `
-        <h2>Письмо коллеге</h2>
-        <p>Коллега просит срочно подготовить отчёт. Ответьте корректно.</p>
-        <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate()">Отправить</button>
-      `;
-    }
+<div class="topic-item ${this.isCompleted('theory')?'completed':''}"
+onclick="Game.goToTopic('theory')">
+<span class="circle">${this.isCompleted('theory')?'✔':''}</span>
+Часть 1: Основы коммуникаций на работе
+</div>
 
-    if (type === "director") {
-      scenario = `
-        <h2>Письмо директору</h2>
-        <p>Вам необходимо запросить дополнительный бюджет.</p>
-        <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate()">Отправить</button>
-      `;
-    }
+<div class="topic-item ${this.isCompleted('task1')?'completed':''} ${this.isUnlocked('task1')?'':'locked'}"
+onclick="Game.goToTopic('task1')">
+<span class="circle">${this.isCompleted('task1')?'✔':''}</span>
+Часть 2: Деловая переписка
+</div>
 
-    document.getElementById("content").innerHTML = scenario;
-  },
+</div>
+`;
+},
 
-  evaluate() {
+isCompleted(topic){
+return this.completedTopics.includes(topic);
+},
 
-    const text = document.getElementById("answer").value;
-    let points = 0;
+isUnlocked(topic){
+if(topic==="theory") return true;
+if(topic==="task1") return this.completedTopics.includes("theory");
+return false;
+},
 
-    if (text.length > 120) points += 10;
-    if (text.toLowerCase().includes("здравствуйте")) points += 10;
-    if (text.toLowerCase().includes("с уважением")) points += 10;
+goToTopic(topic){
 
-    this.score += points;
-    document.getElementById("score").textContent = this.score;
+if(!this.isUnlocked(topic)) return;
 
-    this.finish(true);
-  },
+this.toggleMenu();
 
-  finish(success) {
+if(topic==="theory"){
+this.renderTheory();
+}
 
-    clearInterval(this.timerInterval);
+if(topic==="task1"){
+this.renderCharacters();
+}
+},
 
-    SCORM.setScore(this.score);
-    SCORM.complete(success);
+/* ======================================== */
 
-    document.getElementById("content").innerHTML = `
-      <h2>Курс завершён</h2>
-      <p>Ваш результат: ${this.score} баллов</p>
-      <button onclick="location.reload()">Пройти снова</button>
-    `;
-  }
+renderWelcome(){
+document.getElementById("app").innerHTML=`
+<div>
+<h2>Введите имя</h2>
+<input type="text" id="nameInput"><br>
+
+<h3>Выберите аватар</h3>
+
+<div class="avatar-select">
+<img src="assets/marina.png" onclick="Game.selectAvatar(this)">
+<img src="assets/ivan.png" onclick="Game.selectAvatar(this)">
+<img src="assets/andrey.png" onclick="Game.selectAvatar(this)">
+</div>
+
+<br>
+<button onclick="Game.start()">Начать</button>
+</div>
+`;
+},
+
+selectAvatar(img){
+document.querySelectorAll(".avatar-select img").forEach(el=>{
+el.classList.remove("selected-avatar");
+});
+img.classList.add("selected-avatar");
+this.selectedAvatar = img.src;
+},
+
+start(){
+const name=document.getElementById("nameInput").value;
+
+if(!name || !this.selectedAvatar){
+alert("Введите имя и выберите аватар");
+return;
+}
+
+this.name=name;
+this.avatar=this.selectedAvatar;
+
+this.activateTopbar();
+this.renderTheory();
+},
+
+activateTopbar(){
+document.getElementById("topbar").style.display="flex";
+document.getElementById("playerName").textContent=this.name;
+document.getElementById("avatar").src=this.avatar;
+this.updateXPBar();
+},
+
+renderTheory(){
+document.getElementById("app").innerHTML = `
+<div class="theory-wrapper">
+<div class="theory-container">
+
+<div class="part-badge">ЧАСТЬ 1</div>
+<h1>Основы коммуникаций на работе</h1>
+
+<p>Деловая коммуникация — это способ общения на работе, направленный на достижение результата.</p>
+
+<h2>Основные характеристики</h2>
+<ul>
+<li>Целенаправленность</li>
+<li>Формальность</li>
+<li>Ясность</li>
+<li>Обратная связь</li>
+<li>Этика</li>
+</ul>
+
+<br>
+<button onclick="Game.completeTheory()">Перейти к части 2</button>
+
+</div>
+</div>
+`;
+},
+
+completeTheory(){
+
+if(!this.completedTopics.includes("theory")){
+this.completedTopics.push("theory");
+}
+
+this.gainXP(100);
+this.renderMenu();
+this.renderCharacters();
+},
+
+renderCharacters(){
+
+if(!this.completedTopics.includes("task1")){
+this.completedTopics.push("task1");
+this.renderMenu();
+}
+
+document.getElementById("app").innerHTML=`
+<div style="margin-top:120px;text-align:center;">
+
+<div class="part-badge">ЧАСТЬ 2</div>
+<h2>Деловая переписка</h2>
+
+<div class="characters">
+<div class="card">
+<img src="assets/marina.png">
+<h3>Марина</h3>
+<p>HR-директор</p>
+</div>
+
+<div class="card">
+<img src="assets/ivan.png">
+<h3>Иван</h3>
+<p>Руководитель проекта</p>
+</div>
+
+<div class="card">
+<img src="assets/andrey.png">
+<h3>Андрей</h3>
+<p>Партнёр компании</p>
+</div>
+</div>
+</div>
+`;
+},
+
+gainXP(amount){
+this.xp+=amount;
+
+if(this.xp>=this.xpToNext){
+this.level++;
+this.xp=0;
+this.xpToNext=Math.floor(this.xpToNext*1.3);
+this.showLevelUp();
+}
+
+this.updateXPBar();
+},
+
+updateXPBar(){
+const percent=(this.xp/this.xpToNext)*100;
+document.getElementById("xpBar").style.width=percent+"%";
+document.getElementById("levelLabel").textContent="LVL "+this.level;
+},
+
+showLevelUp(){
+document.getElementById("levelSound").play();
+},
+
+initParallax(){
+document.addEventListener("mousemove",e=>{
+const bg=document.getElementById("bg");
+const x=(e.clientX/window.innerWidth-0.5)*30;
+const y=(e.clientY/window.innerHeight-0.5)*30;
+bg.style.transform=`translate(${x}px,${y}px)`;
+});
+},
+
+initLight(){
+document.addEventListener("mousemove",e=>{
+const light=document.getElementById("light");
+light.style.left=e.clientX+"px";
+light.style.top=e.clientY+"px";
+});
+},
+
+initSnow(){
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let snow=[];
+for(let i=0;i<120;i++){
+snow.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*1.5+0.5,
+d:Math.random()*0.5
+});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="rgba(255,255,255,0.35)";
+ctx.beginPath();
+snow.forEach(f=>{
+ctx.moveTo(f.x,f.y);
+ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);
+});
+ctx.fill();
+move();
+}
+
+let angle=0;
+function move(){
+angle+=0.01;
+snow.forEach((f,i)=>{
+f.y+=Math.pow(f.d,2)+0.5;
+f.x+=Math.sin(angle)*1;
+if(f.y>canvas.height){
+snow[i]={x:Math.random()*canvas.width,y:0,r:f.r,d:f.d};
+}
+});
+}
+
+setInterval(draw,33);
+}
 
 };
 
+window.Game=Game;
 Game.init();
+
+});

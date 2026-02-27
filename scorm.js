@@ -4,24 +4,44 @@ var SCORM = {
   connected: false,
 
   init() {
-    if (window.API) {
-      this.API = window.API;
+    this.API = this.findAPI(window);
+
+    if (this.API) {
       this.API.LMSInitialize("");
       this.connected = true;
+      console.log("SCORM connected");
+    } else {
+      console.log("Standalone mode");
     }
   },
 
-  setScore(score) {
-    if (this.connected) {
-      this.API.LMSSetValue("cmi.core.score.raw", score);
+  findAPI(win) {
+    while (win) {
+      if (win.API) return win.API;
+      win = win.parent;
     }
+    return null;
   },
 
-  complete(success) {
-    if (this.connected) {
-      this.API.LMSSetValue("cmi.core.lesson_status", success ? "passed" : "failed");
-      this.API.LMSFinish("");
-    }
+  getValue(param) {
+    if (!this.connected) return null;
+    return this.API.LMSGetValue(param);
+  },
+
+  setValue(param, value) {
+    if (!this.connected) return;
+    this.API.LMSSetValue(param, value);
+  },
+
+  commit() {
+    if (!this.connected) return;
+    this.API.LMSCommit("");
+  },
+
+  finish() {
+    if (!this.connected) return;
+    this.API.LMSCommit("");
+    this.API.LMSFinish("");
   }
 
 };

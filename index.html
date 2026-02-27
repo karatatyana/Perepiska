@@ -1,79 +1,38 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Курс: Деловая переписка</title>
+<meta charset="UTF-8">
+<title>Business Communication Game</title>
 
-  <!-- Шрифты -->
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Science+Gothic:wght@400;600&family=Wix+Madefor+Display:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+<div class="bg" id="bg"></div>
+<div class="light" id="light"></div>
+<canvas id="particles"></canvas>
 
-  <header>
-    <h1>КУРС: ДЕЛОВАЯ ПЕРЕПИСКА</h1>
-    <div class="stats">
-      ⏳ <span id="timer">05:00</span>
-      | 🎯 <span id="score">0</span>
-    </div>
-  </header>
+<!-- КНОПКА МЕНЮ (всегда видна) -->
+<div class="menu-btn" onclick="Game.toggleMenu()">☰</div>
 
-  <main id="content">
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="side-menu" id="sideMenu"></div>
 
-    <section class="intro">
-      <h2>Введение</h2>
-
-      <p>
-        Деловая переписка — важная часть профессиональной коммуникации.
-        Письмо должно быть вежливым, структурированным и конкретным.
-      </p>
-
-      <p>
-        Избегайте эмоциональных формулировок, проверяйте текст перед отправкой
-        и учитывайте статус адресата.
-      </p>
-
-      <h3>Выберите персонажа для тренировки:</h3>
-
-      <div class="characters">
-
-        <div class="card" onclick="Game.selectCharacter('client')">
-          <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28" alt="">
-          <div class="card-info">
-            <h4>Марина</h4>
-            <p>Клиент</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="Game.selectCharacter('colleague')">
-          <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36" alt="">
-          <div class="card-info">
-            <h4>Иван</h4>
-            <p>Коллега</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="Game.selectCharacter('director')">
-          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" alt="">
-          <div class="card-info">
-            <h4>Андрей</h4>
-            <p>Директор</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
+<div class="topbar" id="topbar">
+<img id="avatar" class="mini-avatar">
+<div id="playerName"></div>
+<div class="progress">
+<div id="xpBar" class="progress-fill"></div>
+</div>
+<div id="levelLabel">LVL 0</div>
 </div>
 
-<script src="scorm.js"></script>
-<script src="script.js"></script>
+<main id="app"></main>
 
+<audio id="levelSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-bonus-229.wav"></audio>
+
+<script src="script.js"></script>
 </body>
 </html>
