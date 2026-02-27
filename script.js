@@ -30,43 +30,42 @@ const Game = {
 
     if (type === "client") {
       scenario = `
-        <h2>Кейс: Ответ клиенту</h2>
-        <p>Клиент недоволен задержкой проекта. Напишите ответ.</p>
+        <h2>Ответ клиенту</h2>
+        <p>Клиент недоволен задержкой проекта. Сформулируйте корректный ответ.</p>
         <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate('client')">Отправить</button>
+        <button onclick="Game.evaluate()">Отправить</button>
       `;
     }
 
     if (type === "colleague") {
       scenario = `
-        <h2>Кейс: Письмо коллеге</h2>
-        <p>Коллега просит срочно подготовить отчет. Ответьте корректно.</p>
+        <h2>Письмо коллеге</h2>
+        <p>Коллега просит срочно подготовить отчёт. Ответьте корректно.</p>
         <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate('colleague')">Отправить</button>
+        <button onclick="Game.evaluate()">Отправить</button>
       `;
     }
 
     if (type === "director") {
       scenario = `
-        <h2>Кейс: Письмо директору</h2>
-        <p>Вам нужно запросить дополнительный бюджет. Сформулируйте письмо.</p>
+        <h2>Письмо директору</h2>
+        <p>Вам необходимо запросить дополнительный бюджет.</p>
         <textarea id="answer"></textarea>
-        <button onclick="Game.evaluate('director')">Отправить</button>
+        <button onclick="Game.evaluate()">Отправить</button>
       `;
     }
 
     document.getElementById("content").innerHTML = scenario;
   },
 
-  evaluate(type) {
+  evaluate() {
 
     const text = document.getElementById("answer").value;
-
     let points = 0;
 
-    if (text.length > 100) points += 10;
-    if (text.includes("Здравствуйте")) points += 10;
-    if (text.includes("С уважением")) points += 10;
+    if (text.length > 120) points += 10;
+    if (text.toLowerCase().includes("здравствуйте")) points += 10;
+    if (text.toLowerCase().includes("с уважением")) points += 10;
 
     this.score += points;
     document.getElementById("score").textContent = this.score;
