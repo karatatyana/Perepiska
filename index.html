@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Курс: Деловая переписка</title>
+
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="app">
@@ -19,15 +24,17 @@
 
   <main id="content">
 
-    <section id="intro">
-      <h2>Введение в деловую переписку</h2>
+    <section class="intro">
+      <h2>Введение</h2>
+
       <p>
-        Деловая переписка — это важная часть профессиональной коммуникации.
+        Деловая переписка — важная часть профессиональной коммуникации.
         Письмо должно быть вежливым, структурированным и конкретным.
       </p>
+
       <p>
         Избегайте эмоциональных формулировок, проверяйте текст перед отправкой
-        и всегда учитывайте статус адресата.
+        и учитывайте статус адресата.
       </p>
 
       <h3>Выберите персонажа для тренировки:</h3>
@@ -35,21 +42,27 @@
       <div class="characters">
 
         <div class="card" onclick="Game.selectCharacter('client')">
-          <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e" />
-          <h4>Марина</h4>
-          <p>Клиент</p>
+          <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28" alt="">
+          <div class="card-info">
+            <h4>Марина</h4>
+            <p>Клиент</p>
+          </div>
         </div>
 
         <div class="card" onclick="Game.selectCharacter('colleague')">
-          <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36" />
-          <h4>Иван</h4>
-          <p>Коллега</p>
+          <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36" alt="">
+          <div class="card-info">
+            <h4>Иван</h4>
+            <p>Коллега</p>
+          </div>
         </div>
 
         <div class="card" onclick="Game.selectCharacter('director')">
-          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" />
-          <h4>Андрей</h4>
-          <p>Директор</p>
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" alt="">
+          <div class="card-info">
+            <h4>Андрей</h4>
+            <p>Директор</p>
+          </div>
         </div>
 
       </div>
@@ -61,5 +74,6 @@
 
 <script src="scorm.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
