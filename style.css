@@ -3,7 +3,7 @@ margin:0;
 font-family:'Wix Madefor Display',sans-serif;
 background:#0f0f1a;
 color:white;
-overflow:hidden;
+overflow-x:hidden;
 }
 
 h1,h2,h3{
@@ -295,38 +295,144 @@ color:white;
 /* ===== PART BADGE ===== */
 
 .part-badge{
-display:inline-block;
-padding:6px 14px;
-border-radius:20px;
-background:linear-gradient(90deg,#8b5cf6,#22d3ee);
+position:absolute;
+top:70;
+left:50%;
+transform:translateX(-50%);
+padding:8px 18px;
+border-radius:25px;
+background:linear-gradient(90deg,#8b5cf6,#8b5cf6);
 color:white;
 font-size:12px;
 letter-spacing:1px;
-margin-bottom:15px;
+box-shadow:0 12px 30px rgba(139,92,246,0.35);
+}
+
+.theory-wrapper{
+padding-bottom:160px;
 }
 
 .theory-container .part-badge{
-margin-bottom:20px;
+margin-bottom:-100px;
+margin-top:-120px;
+
 }
+
+.theory-container button{
+margin-top:100px;
+margin-bottom:100px;
+display:block;
+margin:60px auto 0 auto;
+}
+
+.theory-container{
+top:10px;
+background:white;
+width:1200px;
+height:1350px;
+padding:40px;
+border-radius:20px;
+box-shadow:0 20px 80px rgba(0,0,0,0.5);
+color:#1a1a1a;
+line-height:1.8;
+text-align:left;
+position:relative;
+margin-top:100px;
+}
+
 /* ===== MENU CIRCLE (SAFE) ===== */
 
 .side-menu .circle{
-display:inline-flex;
+display:flex;
 align-items:center;
 justify-content:center;
-width:20px;
-height:20px;
-min-width:20px;
-min-height:20px;
+width:22px;
+height:22px;
+min-width:22px;
+min-height:22px;
 border-radius:50%;
 border:2px solid #8b5cf6;
 font-size:12px;
 line-height:1;
 box-sizing:border-box;
+flex-shrink:0;
 }
 
 .side-menu .topic-item.completed .circle{
 background:#8b5cf6;
 color:#fff;
 border:none;
+}
+
+.page-part-2{
+    padding-top: 0px; /* увеличивай число сколько нужно */
+}
+
+.page-part-2 h2{
+color:#ffffff;
+
+}
+
+.page-part-2 .part-badge{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+padding:8px 18px;
+border-radius:25px;
+background:linear-gradient(90deg,#8b5cf6,#8b5cf6);
+color:white;
+font-size:12px;
+letter-spacing:1px;
+box-shadow:0 12px 30px rgba(139,92,246,0.35);
+}
+
+
+.page-part-2 .card{
+box-shadow:0 0 40px rgba(124, 67, 199, 0.4);
+margin-bottom:80px;
+}
+
+.theory-container .page-part-2 .part-badge{
+margin-bottom:-100px;
+margin-top:-120px;
+
+}
+
+.welcome-screen{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    text-align:center;
+    animation: fadeIn 1.2s ease;
+}
+
+.course-title{
+    font-size:72px;
+    font-weight:800;
+    letter-spacing:3px;
+
+    background: linear-gradient(
+        90deg,
+        #ffffff,
+        #c8d2ff,
+        #9fb3ff,
+        #ffffff
+    );
+    background-size:300%;
+
+    background-clip:text;              /* стандарт */
+    -webkit-background-clip:text;      /* Safari / Chrome */
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+
+    animation: gradientMove 6s infinite linear,
+               glowPulse 2.5s ease-in-out infinite;
+}
+
+.welcome-box{
+    padding:10px 50px;
+    border-radius:20px;
+    animation: slideUp 1s ease;
 }

@@ -88,8 +88,16 @@ this.renderCharacters();
 
 renderWelcome(){
 document.getElementById("app").innerHTML=`
-<div>
-<h2>Введите имя</h2>
+
+<div class="welcome-screen">
+
+<h1 class="course-title">
+Деловые коммуникации
+</h1>
+
+<div class="welcome-box">
+
+<h3>Введите имя</h3>
 <input type="text" id="nameInput"><br>
 
 <h3>Выберите аватар</h3>
@@ -102,6 +110,8 @@ document.getElementById("app").innerHTML=`
 
 <br>
 <button onclick="Game.start()">Начать</button>
+
+</div>
 </div>
 `;
 },
@@ -137,30 +147,8 @@ this.updateXPBar();
 },
 
 renderTheory(){
-document.getElementById("app").innerHTML = `
-<div class="theory-wrapper">
-<div class="theory-container">
-
-<div class="part-badge">ЧАСТЬ 1</div>
-<h1>Основы коммуникаций на работе</h1>
-
-<p>Деловая коммуникация — это способ общения на работе, направленный на достижение результата.</p>
-
-<h2>Основные характеристики</h2>
-<ul>
-<li>Целенаправленность</li>
-<li>Формальность</li>
-<li>Ясность</li>
-<li>Обратная связь</li>
-<li>Этика</li>
-</ul>
-
-<br>
-<button onclick="Game.completeTheory()">Перейти к части 2</button>
-
-</div>
-</div>
-`;
+document.getElementById("app").innerHTML =
+document.getElementById("theoryContent").innerHTML;
 },
 
 completeTheory(){
@@ -182,12 +170,23 @@ this.renderMenu();
 }
 
 document.getElementById("app").innerHTML=`
-<div style="margin-top:120px;text-align:center;">
 
-<div class="part-badge">ЧАСТЬ 2</div>
-<h2>Деловая переписка</h2>
+<div class="page-part-2">
+
+<div style="padding-top:120px; text-align:center;">
+
+<div class="part-badge" style="margin-bottom: 55px;">
+ЧАСТЬ 2
+</div>
+<h1 style="margin-top: 60px; margin-bottom: 10px;">
+Деловая переписка
+</h1>
+<p style="max-width:1000px; margin:0 auto 30px auto; line-height:1.6;">
+Ежедневно мы переписываемся по email и в мессенджерах. Но как сделать этот обмен информацией эффективнее? Деловая переписка требует ясности, структуры и уважительного тона. Давай потренируемся и посмотрим письма твоим коллегам
+</p>
 
 <div class="characters">
+
 <div class="card">
 <img src="assets/marina.png">
 <h3>Марина</h3>
@@ -204,6 +203,8 @@ document.getElementById("app").innerHTML=`
 <img src="assets/andrey.png">
 <h3>Андрей</h3>
 <p>Партнёр компании</p>
+</div>
+
 </div>
 </div>
 </div>
@@ -297,5 +298,37 @@ setInterval(draw,33);
 
 window.Game=Game;
 Game.init();
+
+const level = document.querySelector(".level-number");
+
+function showLevel(number){
+
+    if(!level) return;
+
+    level.textContent = "LEVEL " + number;
+    level.classList.add("show");
+
+    setTimeout(()=>{
+        level.classList.remove("show");
+    },1500);
+}
+
+// универсальная функция открытия
+function openPart(partNumber){
+
+    showLevel(partNumber);
+
+    setTimeout(()=>{
+
+        // скрываем стартовый экран
+        const welcome = document.querySelector(".welcome-screen");
+        if(welcome) welcome.style.display = "none";
+
+        // показываем теорию
+        const theory = document.querySelector(".theory-wrapper");
+        if(theory) theory.style.display = "flex";
+
+    },1500);
+}
 
 });
